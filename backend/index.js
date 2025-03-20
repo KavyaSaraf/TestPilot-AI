@@ -10,7 +10,7 @@ const { Builder } = require('selenium-webdriver');
 
 const app = express();
 const PORT = 5000;
-
+ 
 // Gemini setup
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
@@ -85,7 +85,12 @@ app.post('/generate-test', async (req, res) => {
     console.log(`✅ Test Script Generated: ${fileName}`);
     io.emit('test-log', { type: 'success', message: `✅ Test script generated: ${fileName}` });
 
-    res.json({ message: '✅ Test script generated successfully', fileName });
+    res.json({ 
+      message: '✅ Test script generated successfully', 
+      fileName,
+      testScript: generatedCode // add this
+    });
+    
   } catch (error) {
     console.error('❌ Error generating test script:', error);
     io.emit('test-log', { type: 'error', message: `❌ Error generating test script: ${error.message}` });
